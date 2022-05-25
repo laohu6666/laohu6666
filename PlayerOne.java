@@ -5,14 +5,15 @@ import java.awt.event.KeyEvent;
 
 public class PlayerOne extends Tank {
 
-    private boolean left;
-	private boolean down;
-	private boolean right;
-	private boolean up;
+    private boolean up = false;
+    private boolean left = false;
+    private boolean right = false;
+    private boolean down = false;
 
-	public PlayerOne(String img, int x, int y, String upImage, String downImage, String leftImage, String rightImage, GamePanel gamePanel){
+    public PlayerOne(String img, int x, int y, String upImage, String downImage, String leftImage, String rightImage, GamePanel gamePanel){
         super(img, x, y, upImage, downImage, leftImage, rightImage, gamePanel);
     }
+
     public void keyPressed(KeyEvent e){
         int key = e.getKeyCode();
         switch (key){
@@ -37,7 +38,7 @@ public class PlayerOne extends Tank {
         int key = e.getKeyCode();
         switch (key){
             case KeyEvent.VK_A:
-                 left = false;
+                left = false;
                 break;
             case KeyEvent.VK_S:
                 down = false;
@@ -48,14 +49,31 @@ public class PlayerOne extends Tank {
             case KeyEvent.VK_W:
                 up = false;
                 break;
+            case KeyEvent.VK_SPACE:
+                this.attack();
+                break;
             default:
                 break;
         }
     }
-    
+
+    public void move(){
+        if(left){
+            leftward();
+        }
+        else if(right){
+            rightward();
+        }
+        else if(up){
+            upward();
+        }else if(down){
+            downward();
+        }
+    }
 
     public void paintSelf(Graphics g) {
         g.drawImage(img, x, y, null);
+        move();
     }
 
     public Rectangle getRec() {
