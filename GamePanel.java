@@ -1,27 +1,39 @@
 package com.sxt;
 
 import java.awt.Color;
-import java.awt.Font;
+import java.awt.*;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-
-import javax.swing.JFrame;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.*;
 public class GamePanel extends JFrame {
      //定义双缓存图片
 	Image offScreemImage = null;
     //窗口长宽
     int width = 800;
     int height = 610;
+    //物体集合
+    public List<Tank> tankList = new ArrayList<>();
+  //游戏指针
+   
     //指针图片
-    Image select = Toolkit.getDefaultToolkit().getImage("D:\\坦克大战\\【尚学堂】Java游戏项目之1小时做出Java坦克大战小游戏\\【尚学堂】Java游戏项目之1小时做出Java坦克大战小游戏_源码课件\\images\\selecttank.gif");
+    Image select = Toolkit.getDefaultToolkit().getImage("src/images/selecttank.gif");
     //指针初始纵坐标
    int y = 150;
    //游戏模式 0 游戏开始， 1 单人模式，2 双人模式
    int state = 0;
+   //游戏是否开始
+   private boolean start = false;
    int a = 1;
+   //玩家
+   private PlayerOne playerOne = new PlayerOne("src/images/p1tankU.gif", 125, 510,
+           "src/images/p1tankU.gif","images/p1tankD.gif",
+           "src/images/p1tankL.gif","images/p1tankR.gif", this);
+   
    //窗口的启动方法
     public void launch(){
         //标题
@@ -75,6 +87,7 @@ public class GamePanel extends JFrame {
     	gImage.drawString("按1，2选择模式，按回车开始游戏",0,400);
     //绘制指针
     	gImage.drawImage(select,160, y,null);
+    	
 }
     //state == 0/1, 游戏开始;
     else if(state == 1||state == 2){
@@ -86,7 +99,11 @@ public class GamePanel extends JFrame {
         else{
         	gImage.drawString("双人模式",220,200);
         }
+        
+		//添加游戏元素
+        playerOne.paintSelf(gImage);
     }
+    //将缓冲区绘制好的图形整个绘制到容器的画布中
     g.drawImage(offScreemImage,0,0,null);
 }
    
@@ -112,8 +129,16 @@ public class GamePanel extends JFrame {
                 case KeyEvent.VK_ENTER:
                     state = a;
                     break;
-                
-            }
+                default:
+                    playerOne.keyPressed(e);
+                  
+            } 
+            
+        }
+        //松开键盘
+        @Override
+        public void keyReleased(KeyEvent e){
+        	playerOne.keyPressed(e);;
         }
     }
 

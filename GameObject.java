@@ -8,11 +8,11 @@ import java.awt.Toolkit;
 public abstract class GameObject {
 
     //图片
-    private Image img;
+    public Image img;
     //游戏元素的横坐标
-    private int x;
+    public int x;
     //游戏元素的纵坐标
-    private int y;
+   public int y;
     //界面
     private GamePanel gamePanel;
 

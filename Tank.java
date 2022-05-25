@@ -2,11 +2,12 @@ package com.sxt;
 
 import java.awt.Graphics;
 import java.awt.Rectangle;
+import java.awt.Toolkit;
 
 public abstract class Tank extends GameObject{
     //尺寸
-	int width = 40;
-    int height = 50;
+	 int width = 40;
+     int height = 50;
      //坦克速度
     private int speed = 3;
      //坦克初始方向
@@ -24,6 +25,35 @@ public abstract class Tank extends GameObject{
         this.leftImage = leftImage;
         this.downImage = downImage;
         this.rightImage = rightImage;
+    }
+   
+    public void leftward(){
+        direction = Direction.LEFT;
+        setImg(leftImage);
+        this.x -= speed;
+        
+    }
+    public void rightward(){
+        direction = Direction.RIGHT;
+        setImg(rightImage);
+        this.x += speed;
+
+    }
+    public void upward(){
+        direction = Direction.UP;
+        setImg(upImage);
+        this.y -= speed;
+
+    }
+    public void downward(){
+        direction = Direction.DOWN;
+        setImg(downImage);
+         this.y += speed;
+         
+    }
+    public void setImg(String img) {
+       	  this.img = Toolkit.getDefaultToolkit().getImage(img);
+
     }
 
     @Override
