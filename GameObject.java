@@ -76,13 +76,6 @@ public abstract class GameObject {
     public void setSpeed(int speed) {
         this.speed = speed;
     }
-    public Direction getDirection() {
-        return direction;
-    }
-
-    public void setDirection(Direction direction) {
-        this.direction = direction;
-    }
 
     public GamePanel getGamePanel() {
         return gamePanel;

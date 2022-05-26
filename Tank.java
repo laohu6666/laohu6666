@@ -1,6 +1,8 @@
 package com.sxt;
 
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.List;
 
 public class Tank extends GameObject{
@@ -19,6 +21,9 @@ public class Tank extends GameObject{
     Direction direction = Direction.UP;
     //坦克速度
     private int speed = 3;
+    //坦克头部坐标
+    Point p;
+
     //坦克坐标，方向，图片，方向，面板
     public Tank(String img, int x, int y, String upImage, String downImage, String leftImage, String rightImage, GamePanel gamePanel) {
         super(img, x, y, gamePanel);
@@ -28,72 +33,41 @@ public class Tank extends GameObject{
         this.rightImage = rightImage;
     }
 
-
     public void leftward(){
         direction = Direction.LEFT;
         setImg(leftImage);
-        if(!hitWall(x-speed, y) && !moveToBorder(x-speed, y)){
+        if(!hitWall(x-speed, y) && !moveToBorder(x-speed, y) && alive){
             this.x -= speed;
         }
     }
     public void rightward(){
         direction = Direction.RIGHT;
         setImg(rightImage);
-        if(!hitWall(x+speed, y) && !moveToBorder(x+speed, y)){
+        if(!hitWall(x+speed, y) && !moveToBorder(x+speed, y) && alive){
             this.x += speed;
         }
     }
     public void upward(){
         direction = Direction.UP;
         setImg(upImage);
-        if(!hitWall(x, y-speed) && !moveToBorder(x, y- speed)){
+        if(!hitWall(x, y-speed) && !moveToBorder(x, y- speed) && alive){
             this.y -= speed;
         }
     }
     public void downward(){
         direction = Direction.DOWN;
         setImg(downImage);
-        if(!hitWall(x, y+speed) && !moveToBorder(x, y+speed)){
+        if(!hitWall(x, y+speed) && !moveToBorder(x, y+speed) && alive){
             this.y += speed;
         }
     }
-
     public void attack(){
         Point p = getHeadPoint();
         if(attackCoolDown && alive){
-            Bullet bullet = new Bullet("src/images/bulletGreen.gif",p.x,p.y,direction, this.gamePanel);
+            Bullet bullet = new Bullet("images/3.gif",p.x,p.y,direction, this.gamePanel);
             this.gamePanel.bulletList.add(bullet);
             attackCoolDown = false;
             new AttackCD().start();
-        }
-    }
-
-    public class AttackCD extends Thread{
-        public void run(){
-            attackCoolDown=false;//将攻击功能设置为冷却状态
-            try{
-                Thread.sleep(attackCoolDownTime);//休眠1秒
-            }catch(InterruptedException e){
-                e.printStackTrace();
-            }
-            attackCoolDown=true;//将攻击功能解除冷却状态
-            this.stop();
-        }
-    }
-
-    //根据方向确定头部位置，x和y是左下角的点
-    public Point getHeadPoint(){
-        switch (direction){
-            case UP:
-                return new Point(x + width/2, y );
-            case LEFT:
-                return new Point(x, y + height/2);
-            case DOWN:
-                return new Point(x + width/2, y + height);
-            case RIGHT:
-                return new Point(x + width, y + height/2);
-            default:
-                return null;
         }
     }
 
@@ -123,6 +97,35 @@ public class Tank extends GameObject{
             return true;
         }
         return false;
+    }
+
+    public class AttackCD extends Thread{
+        public void run(){
+            attackCoolDown=false;//将攻击功能设置为冷却状态
+            try{
+                Thread.sleep(attackCoolDownTime);//休眠1秒
+            }catch(InterruptedException e){
+                e.printStackTrace();
+            }
+            attackCoolDown=true;//将攻击功能解除冷却状态
+            this.stop();
+        }
+    }
+
+    //根据方向确定头部位置，x和y是左下角的点
+    public Point getHeadPoint(){
+        switch (direction){
+            case UP:
+                return new Point(x + width/2, y );
+            case LEFT:
+                return new Point(x, y + height/2);
+            case DOWN:
+                return new Point(x + width/2, y + height);
+            case RIGHT:
+                return new Point(x + width, y + height/2);
+            default:
+                return null;
+        }
     }
 
     @Override
