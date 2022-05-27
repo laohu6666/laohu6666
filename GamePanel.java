@@ -112,7 +112,7 @@ public class GamePanel extends JFrame {
             repaint();
             try {
                 //œﬂ≥Ã–›√ﬂ  1√Î = 1000∫¡√Î
-                Thread.sleep(25);
+                Thread.sleep(30);
             }catch (Exception e){
                 e.printStackTrace();
             }
